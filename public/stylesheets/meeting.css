@@ -1,0 +1,37 @@
+ /* Custom container */
+html {
+  height: 100%;
+}
+body {
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+}
+
+#videos {
+  height: 100%;
+  overflow: hidden;
+  width: 70%;
+  float: left;
+}
+
+#chatbox {
+  height: 100%;
+  float: left;
+  width: 30%;
+}
+
+#history_msg {
+  height: 50%;
+}
+
+/*
+#temp_msg {
+  height: 20%;
+}
+  */
+
+.flip {
+-webkit-transform: rotateY(180deg);
+}
+

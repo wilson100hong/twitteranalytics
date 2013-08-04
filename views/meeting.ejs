@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="stylesheets/normalize.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="components/bootstrap/docs/assets/css/bootstrap.css">
+    <script src="components/modernizr/modernizr.js"></script>
+
+    <link rel="stylesheet" href="stylesheets/carousel.css"></link>
+    <script src="components/webrtc/webrtc.io.js"></script>
+  </head>
+   <body class="meeting" onload="init('<%= language %>','<%=username%>')">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#"><%= title%></a>
+          <div class="nav-collapse collapse">
+            <p class="navbar-text pull-right">
+              Logged in as <%= username %>
+            </p>
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="well sidebar-nav">
+
+            <div id="chatbox">
+
+              <div id="report">Report</div>
+
+              <div id="hideShowMessages" style="display:none" class="button">toggle chat</div>
+              <div id="history_msg"></div>
+              <div id="temp_msg"></div>
+              <input style="display:none" id="chatinput" type="text" placeholder="Message:"/>
+              <!--<input id="chatinput" type="text" placeholder="Message:"/>-->
+            </div>
+
+            <div class="buttonBox" style="display:none">
+              <div id="speak" class="button">Speak</div>
+              <div id="fullscreen" class="button">Enter Full Screen</div>
+              <div id="newRoom" class="button">Create A New Room</div>
+            </div>
+   
+           
+          </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9">
+          <div class="hero-unit">
+            <div class="user" user="<%=username%>">
+              <h1><%=username%></h1>
+              <div id="videos">
+                <video id="you" class="flip" autoplay="true" controls  width="263" height="200"></video>
+              </div>
+              <p class="msg"></p>
+            </div>
+
+            
+           <!--  <p><a href="#" class="btn btn-primary btn-large">Learn more »</a></p> -->
+          </div>
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>© Company 2013</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+    <script src="components/jquery/jquery.min.js"></script>
+    <script src="components/bootstrap/docs/assets/js/bootstrap.min.js"></script>
+    <script src="javascripts/translator.js"></script>
+    <script src="javascripts/meeting.js"></script>
+</body>
+
+</html>
