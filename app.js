@@ -9,7 +9,29 @@ var express = require('express')
   , fs = require('fs')
   , path = require('path')
   , ntwitter = require('ntwitter');
+var MongoClient = require('mongodb').MongoClient;
+var format = require('util').format;
 
+MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db){
+  if (err) throw err;
+
+  var collection = db.collection('test_insert');
+
+  collection.insert({a: 2, b: 4}, function(err, docs){
+
+    collection.count(function(err, count){
+      console.log(format("count = %s", count))
+    });
+
+    collection.find().toArray(function(err, results){
+      console.dir(results);
+
+      db.close();
+    });
+  });
+});
+
+/*
 var twit = new ntwitter({
   consumer_key: 'y2it3VGcR0lpmfplJWyvQ',
   consumer_secret: '0ZARGMogR6lGCDMli8eyrh2PhOm9U5WhhjHM1nz0Hzs',
@@ -23,6 +45,7 @@ twit
       console.log(data);
     });
   });
+  */
 var app = require('express')();
 
 module.exports = app;
