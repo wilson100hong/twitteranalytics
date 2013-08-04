@@ -25,6 +25,7 @@
         map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
 
+        var openings = [];
 
         for(var artist in band_locations) {
           var loc = band_locations[artist];
@@ -34,7 +35,13 @@
           });
 
           google.maps.event.addListener(marker, 'click', function() {
+            for (var j = 0; j < openings.length; j++) {
+              // TODO: close window
+              openings[j]['infowindow'].close(map, this);
+            }
+            openings = [];
             this['infowindow'].open(map, this);
+            openings.push(this);
           });
         }
       }
