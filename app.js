@@ -10,7 +10,6 @@ var express = require('express')
   , path = require('path')
   , database = require('./database')
   , ta = require('./twitter_analytics');
-  
 
 var app = require('express')();
 
@@ -43,3 +42,8 @@ var history = [];
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+
+// Start Twitter Analytics Ingestion
+ta.ingest('#OutsideLandsHack');
+
