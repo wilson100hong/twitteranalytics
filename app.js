@@ -35,6 +35,7 @@ app.get('/', routes.index);
 app.get('/lottery_api', routes.lottery_api);
 app.get('/lottery', routes.lottery);
 app.get('/queryall', routes.queryall);
+app.get('/gmap', routes.gmap);
 
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
