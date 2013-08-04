@@ -94,7 +94,7 @@ exports.draw = function(artist, callback) {
   }
 }
 
-var readDraw = function(artist, callback) {
+var realDraw = function(artist, callback) {
   col.tweet.find().toArray(function(err, docs){
     var n = docs.length;
     var rand = Math.floor(Math.random()*n);
