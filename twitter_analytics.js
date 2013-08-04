@@ -26,8 +26,10 @@ function trimHashtagOrMention(x) {
 // Parse raw data to operation
 function parse(data, callback) {
   console.log("Tokenize...");
+  // 0. Log all tweets
+  database.log(data);
   // 1. Tokenize
-  var text = data["text"];
+  var text = data["text"]
   var tokens = text.split(" ");
   
   // 2. Cateogrize into # and @ arrays
@@ -68,11 +70,9 @@ function parse(data, callback) {
       console.log(sa);
       if (sa["docSentiment"] != undefined) {
         var ds = sa["docSentiment"];
-        var score = 0;
         if (ds["score"] != undefined) {
-          score = parseFloat(ds["score"]);
-        }
-        for (var i = 0; i < mentions.length; i++) {
+          var score = parseFloat(ds["score"]);
+          for (var i = 0; i < mentions.length; i++) {
             // { artist: mention,
             //   count:  1, 
             //   score: score}
@@ -81,6 +81,7 @@ function parse(data, callback) {
               "count": 1,
               "score": score});
             console.log("Pushed to buffer");
+          }
         }
       }
       callback();
