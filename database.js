@@ -5,7 +5,6 @@ var EventEmitter = require('events').EventEmitter;
 var dbEmitter = new EventEmitter();
 
 var col;
-
 var db;
 
 var ARTIST_ARRAY = 'artist_property';
