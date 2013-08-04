@@ -69,3 +69,12 @@ var realUpdate = function(arg) {
 
   }
 }
+
+exports.queryall = function(callback) {
+  col.find({}).toArray(function(err, docs){
+    docs.forEach(function(elem, index, array){
+      docs[index].rating = elem.score / elem.count;
+    });
+    callback(docs);
+  });
+}
