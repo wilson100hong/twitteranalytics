@@ -10,7 +10,7 @@ var ntwitter = require('ntwitter'),
 var buffer = [];  // operation buffer
 
 var twit;
-var default_server = false;
+var default_server = true;
 
 if (default_server) {
   twit =  new ntwitter({

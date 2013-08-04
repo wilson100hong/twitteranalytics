@@ -6,30 +6,106 @@
     <meta charset="utf-8">
     <style>
       html, body, #map-canvas {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+        margin: 0;
+        padding: 0;
+        height: 100%;
       }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script>
       var map;
       function initialize() {
         var mapOptions = {
-          zoom: 8,
-          center: new google.maps.LatLng(-34.397, 150.644),
+          zoom: 16,
+          center: new google.maps.LatLng(37.76847529916276, 237.50945252799988),
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
+
+
+      for(var artist in band_locations) {
+        var loc = band_locations[artist];
+        new google.maps.Marker({position: loc, map: map, title: artist});
+      }
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);
 
-      $("#map-canvas").on("click", function(e){
-      });
+      var band_locations = {
+        "A-Trak": new google.maps.LatLng(37.76819542364131, -122.49388414001463),
+        "PaulMcCartney" : new google.maps.LatLng(37.76883998385941, -122.48900251960752),
+        "ultrawideband": new google.maps.LatLng(37.76937428609706, -122.4914486942291),
+        "5566": new google.maps.LatLng(37.76834808314794, -122.49228554344175),
+        "mayday": new google.maps.LatLng(37.768112732943415, -122.4906547603607)
+      };
 
+
+      //var color_scale = d3.scale.linear().domain([0.0, 0.2, 0.4, 0.6, 0.8, 1.0]).range(['white', 'purple', 'blue', 'green', 'yellow', 'red']);
+      var color_scale = d3.scale.linear().domain([0.0, 1.0]).range(['white', 'red']);
+
+      var markers = [];
+
+      /*
+          for (var i = 0; i < data.length; i++) {
+            var loc = band_locations[data[i].artist];
+            if (loc) {
+              var rating = data[i].score / data[i].count;            
+              var circleMarker = new google.maps.Circle({
+                strokeColor: color_scale(data[i].rating),
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: color_scale(data[i].rating),
+                fillOpacity: data[i].rating,
+                map: map,
+                center: loc,
+                radius: 0
+              });
+
+              markers.push(circleMarker);
+
+            }
+          }
+          */
+
+      setInterval(function(){
+        $.get("/queryall").done(function(data){
+
+          for (var j = 0; j < markers.length; j++){
+            markers[j].setRadius(null);
+          }
+
+          var data = JSON.parse(data);
+
+          for (var i = 0; i < data.length; i++) {
+            var loc = band_locations[data[i].artist];
+            if (loc) {
+              var rating = data[i].score / data[i].count;            
+              var circleMarker = new google.maps.Circle({
+                strokeColor: color_scale(data[i].rating),
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: color_scale(data[i].rating),
+                fillOpacity: data[i].rating,
+                map: map,
+                center: loc,
+                radius: data[i].count * 10
+              });
+
+              markers.push(circleMarker);
+
+            }
+          }
+        });
+      }, 2000);
+
+      /*
+      setInterval(funciton(e){
+        console.log("help");
+      }, 5000);
+      */
 
     </script>
   </head>
