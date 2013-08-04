@@ -9,27 +9,11 @@ var express = require('express')
   , fs = require('fs')
   , path = require('path')
   , ntwitter = require('ntwitter');
-var MongoClient = require('mongodb').MongoClient;
-var format = require('util').format;
 
-MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db){
-  if (err) throw err;
 
-  var collection = db.collection('test_insert');
+var database = require('./database');
 
-  collection.insert({a: 2, b: 4}, function(err, docs){
-
-    collection.count(function(err, count){
-      console.log(format("count = %s", count))
-    });
-
-    collection.find().toArray(function(err, results){
-      console.dir(results);
-
-      db.close();
-    });
-  });
-});
+database.update({a: 2});
 
 /*
 var twit = new ntwitter({
