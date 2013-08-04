@@ -77,3 +77,9 @@ exports.queryall = function(callback) {
     callback(docs);
   });
 }
+
+exports.draw = function(artist, callback) {
+  col.find( /* TODO */  ).toArray(function(err, docs){
+    callback(docs);
+  });
+}
