@@ -8,7 +8,7 @@ var express = require('express')
   , http = require('http')
   , fs = require('fs')
   , path = require('path')
-  , database = require('./database')
+  , db = require('./database')
   , ta = require('./twitter_analytics');
   
 
@@ -37,9 +37,11 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/uWvjW5697stsers', user.list);
 
-
-var history = [];
-
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+db.init();
+
+db.update([{artist: "mario", score: 5.5, count: 4}, {artist: "peach", score:0.78, count: 9}]);
+db.update([{artist: "mario", score: 3, count: 2}]);
