@@ -16,3 +16,10 @@ exports.queryall = function(req, res) {
     res.send(JSON.stringify(docs));
   });
 };
+
+exports.lottery = function(req, res) {
+  var artist = req.query.artist;
+  db.draw(artist, function(lucky){
+    res.send(JSON.stringify(lucky));
+  });
+}

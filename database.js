@@ -4,10 +4,11 @@ var format = require('util').format;
 var EventEmitter = require('events').EventEmitter;
 var dbEmitter = new EventEmitter();
 
-var col;
+var col = {};
 var db;
 
 var ARTIST_ARRAY = 'artist_property';
+var ALL_TWEET = 'all_tweet';
 
 exports.init = function() {
 
@@ -16,10 +17,15 @@ exports.init = function() {
       throw err;
     }
 
+    db_.collection(ALL_TWEET, function(err, col_){
+      db = db_;
+      col.tweet = col_;
+      dbEmitter.emit("db-ready-tweet");
+    });
+
     db_.collection(ARTIST_ARRAY, function(err, col_){
       db = db_;
-      col = col_;
-      console.log("connected to mongodb");
+      col.artist = col_;
       dbEmitter.emit("db-ready");
     });
 
@@ -38,7 +44,7 @@ exports.update = function(arg) {
   console.log("in database.js");
   console.log(arg);
 
-  if (col === undefined) {
+  if (col.artist === undefined) {
     dbEmitter.on("db-ready", function(stream){
       realUpdate(arg);
     });
@@ -54,13 +60,13 @@ var realUpdate = function(arg) {
     var p = arg[i];
     console.log(p);
 
-    col.findOne({artist: p.artist}, function(err, doc){
+    col.artist.findOne({artist: p.artist}, function(err, doc){
       if (doc) {
-        col.update({artist: p.artist}, {$inc: {score: p.score, count: p.count}}, function(err, docs){
+        col.artist.update({artist: p.artist}, {$inc: {score: p.score, count: p.count}}, function(err, docs){
           if (err) console.warn(err.message);
         });
       } else {
-        col.insert(p, function(err, docs){
+        col.artist.insert(p, function(err, docs){
           if (err) console.warn(err.message);
         });
       }
@@ -70,7 +76,7 @@ var realUpdate = function(arg) {
 }
 
 exports.queryall = function(callback) {
-  col.find({}).toArray(function(err, docs){
+  col.artist.find({}).toArray(function(err, docs){
     docs.forEach(function(elem, index, array){
       docs[index].rating = elem.score / elem.count;
     });
@@ -79,7 +85,37 @@ exports.queryall = function(callback) {
 }
 
 exports.draw = function(artist, callback) {
-  col.find( /* TODO */  ).toArray(function(err, docs){
-    callback(docs);
+  if (col.tweet == undefined) {
+    dbEmitter.on("db-ready-tweet", function(stream){
+      realDraw(artist, callback);
+    });
+  } else {
+    realDraw(artist, callback);
+  }
+}
+
+var readDraw = function(artist, callback) {
+  col.tweet.find().toArray(function(err, docs){
+    var n = docs.length;
+    var rand = Math.floor(Math.random()*n);
+    console.log("Lottery Luck guy:");
+    console.log(docs[rand]);
+    callback(docs[rand]);
+  });
+}
+
+exports.log = function(doc) {
+  if (col.tweet == undefined) {
+    dbEmitter.on("db-ready-tweet", function(stream){
+      realLog(doc);
+    });
+  } else {
+    realLog(doc);
+  }
+}
+
+var realLog = function(doc) {
+  col.tweet.insert(doc, function(err, docs){
+    if (err) console.warn(err.message);
   });
 }

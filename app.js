@@ -4,8 +4,6 @@
 
 var express = require('express')
   , routes = require('./routes')
-  //, user = require('./routes/user')
-  , artist = require('./routes/artist')
   , http = require('http')
   , fs = require('fs')
   , path = require('path')
@@ -34,7 +32,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/artist/lottery', artist.lottery);
+app.get('/lottery', routes.lottery);
 app.get('/queryall', routes.queryall);
 
 var server = http.createServer(app).listen(app.get('port'), function(){

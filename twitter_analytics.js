@@ -9,12 +9,24 @@ var ntwitter = require('ntwitter'),
 
 var buffer = [];  // operation buffer
 
-var twit = new ntwitter({
-  consumer_key: 'y2it3VGcR0lpmfplJWyvQ',
-  consumer_secret: '0ZARGMogR6lGCDMli8eyrh2PhOm9U5WhhjHM1nz0Hzs',
-  access_token_key: '1615787012-I7RTCotqwBUauGIQo7ZGS6VvfoKIKckuI0E8tUk',
-  access_token_secret: 'fJzic3iSklcsIaeFBJqsFnioxLxYLxf0BusheqwMc'
-});
+var twit;
+var default_server = false;
+
+if (default_server) {
+  twit =  new ntwitter({
+    consumer_key: 'y2it3VGcR0lpmfplJWyvQ',
+    consumer_secret: '0ZARGMogR6lGCDMli8eyrh2PhOm9U5WhhjHM1nz0Hzs',
+    access_token_key: '1615787012-I7RTCotqwBUauGIQo7ZGS6VvfoKIKckuI0E8tUk',
+    access_token_secret: 'fJzic3iSklcsIaeFBJqsFnioxLxYLxf0BusheqwMc'
+  });
+} else {
+  twit =  new ntwitter({
+    consumer_key: 'wriTmvSBALisny9r3Pki0g',
+    consumer_secret: 'aryERK3OByFLHEZrNyfh0XAl7WeijoTPzKxEgnkRo',
+    access_token_key: '248561777-0V3Crd611Yc0r8kX0n9nvpWrcjGT3t3sonyxZJtp',
+    access_token_secret: 'EqXMEHeDkzY3ctnvJzfCCXqKPJoBNo1TcXmQzoBztAU'
+  });
+}
 
 function trimHashtagOrMention(x) {
   if (x.length > 0) {
@@ -27,7 +39,7 @@ function trimHashtagOrMention(x) {
 function parse(data, callback) {
   console.log("Tokenize...");
   // 1. Tokenize
-  var text = data["text"];
+  var text = data["text"]
   var tokens = text.split(" ");
   
   // 2. Cateogrize into # and @ arrays
@@ -51,6 +63,12 @@ function parse(data, callback) {
     }
   }
   
+  // Log 1 tweet for every mentioned
+  for (var i = 0; i < mentions.length; i++) {
+    data["artist"] = mentions[i];
+    database.log(data);
+  }
+  
   // 3. Sentiment Analysis comupte score. NOTE: this is async call
   // console.log("Sentiment Analyizing...");
   console.log("Sentiment Analyzing...");
@@ -68,11 +86,9 @@ function parse(data, callback) {
       console.log(sa);
       if (sa["docSentiment"] != undefined) {
         var ds = sa["docSentiment"];
-        var score = 0;
         if (ds["score"] != undefined) {
-          score = parseFloat(ds["score"]);
-        }
-        for (var i = 0; i < mentions.length; i++) {
+          var score = parseFloat(ds["score"]);
+          for (var i = 0; i < mentions.length; i++) {
             // { artist: mention,
             //   count:  1, 
             //   score: score}
@@ -81,6 +97,7 @@ function parse(data, callback) {
               "count": 1,
               "score": score});
             console.log("Pushed to buffer");
+          }
         }
       }
       callback();
