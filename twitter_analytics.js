@@ -10,7 +10,7 @@ var ntwitter = require('ntwitter'),
 var buffer = [];  // operation buffer
 
 var twit;
-var default_server = true;
+var default_server = false;
 
 if (default_server) {
   twit =  new ntwitter({
@@ -65,6 +65,14 @@ function parse(data, callback) {
     }
   }
   
+  // reconstruct phrase
+  var phrase = "";
+  for (var i = 0; i < words.length; i++) {
+    phrase += words[i];
+    phrase += " ";
+  }
+  data["phrase"] = phrase;
+  
   // Log the tweet for every mentioned
   for (var i = 0; i < mentions.length; i++) {
     data["artist"] = mentions[i];
@@ -72,12 +80,7 @@ function parse(data, callback) {
   }
   
   // 3. Sentiment Analysis comupte score. NOTE: this is async call
-  // reconstruct phrase
-  var phrase;
-  for (var i = 0; i < words.length; i++) {
-    phrase += words[i];
-    phrase += " ";
-  }
+
   // console.log("Sentiment Analyizing...");
   console.log("Sentiment Analyzing...");
   request(SENTIMENT_URL + phrase, function (error, response, body) {

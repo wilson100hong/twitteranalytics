@@ -21,18 +21,27 @@
 <body>
   <div id="tweet"></div>
   <div class="hero-unit">
-    <h1>Draw the lucky audience!</h1>
+    <h2>Who is the lucky fan of <%= artist %>? </h2>
+    
     <h1 id="textmsg"></h1>
     <p id="userid"></p>
     <p><a id="drawbtn" class="btn btn-primary btn-large">Draw</a></p>
+    
   </div>
 
   <script>
     $("#drawbtn").on("click", function(){
       $.get("/lottery_api", {artist: "wilson100hong"}).done(function(data){
+        
         var data = JSON.parse(data);
-        $("#textmsg").text(data.text);
+        console.log(data);
+        if (data.phrase)
+          $("#textmsg").text('\"' + data.phrase + '\"' );
+        else
+          $("#textmsg").text('\"' + data.text + '\"' );
+          
         $("#userid").text(data.name + " (" + data.screen_name + ")");
+        // TODO: created_at
       });
     });
   </script>

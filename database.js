@@ -102,7 +102,7 @@ var realDraw = function(artist, callback) {
       console.log("Lottery Luck guy:");
       console.log(docs[rand]);
       var ch = docs[rand];
-      var obj = {text: ch.text, name: ch.user.name, screen_name: ch.user.screen_name};
+      var obj = {text: ch.text, name: ch.user.name, screen_name: ch.user.screen_name, phrase: ch.phrase, created_at: ch.created_at};
       callback(obj);
     } else {
       callback({text: "", name:"", screen_name:""});

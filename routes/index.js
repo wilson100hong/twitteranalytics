@@ -25,7 +25,9 @@ exports.lottery_api = function(req, res) {
 }
 
 exports.lottery = function(req, res) {
-  res.render('lottery');
+  var artist = req.query.artist;
+  
+  res.render('lottery', {"artist" : artist});
 }
 
 exports.gmap = function(req, res) {
