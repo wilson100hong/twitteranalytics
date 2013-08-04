@@ -120,7 +120,7 @@ function update() {
  
   // 3. Send ops to database
   console.log("Write to database...");
-  // TODO database.update(ops); 
+  database.update(ops); 
 }
 
 exports.ingest = function(tag) {
@@ -128,6 +128,7 @@ exports.ingest = function(tag) {
 
   twit.stream('statuses/filter', {'track': tag}, function(stream) {
     stream.on('data', function (data) {
+      console.log(data);
       parse(data, function() {
         if (buffer.length >= BUFFER_SIZE) {
           console.log("Buffer full, doing update...");
