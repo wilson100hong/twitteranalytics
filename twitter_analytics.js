@@ -47,6 +47,7 @@ function parse(data, callback) {
   //   b. @ mention
   var hashtags = [];
   var mentions = [];
+  var words = [];
   for (var i = 0; i < tokens.length; i++) {
     var token = tokens[i];
     switch(token.charAt(0)) {
@@ -59,20 +60,27 @@ function parse(data, callback) {
           mentions.push(trimHashtagOrMention(token));
         break;
       default:
+        words.push(token);
         break;
     }
   }
   
-  // Log 1 tweet for every mentioned
+  // Log the tweet for every mentioned
   for (var i = 0; i < mentions.length; i++) {
     data["artist"] = mentions[i];
     database.log(data);
   }
   
   // 3. Sentiment Analysis comupte score. NOTE: this is async call
+  // reconstruct phrase
+  var phrase;
+  for (var i = 0; i < words.length; i++) {
+    phrase += words[i];
+    phrase += " ";
+  }
   // console.log("Sentiment Analyizing...");
   console.log("Sentiment Analyzing...");
-  request(SENTIMENT_URL + text, function (error, response, body) {
+  request(SENTIMENT_URL + phrase, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       // console.log("Seniment Analyzation done.");
       // console.log(body) // Print the google web page.
