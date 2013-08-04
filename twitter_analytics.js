@@ -68,9 +68,11 @@ function parse(data, callback) {
       console.log(sa);
       if (sa["docSentiment"] != undefined) {
         var ds = sa["docSentiment"];
+        var score = 0;
         if (ds["score"] != undefined) {
-          var score = parseFloat(ds["score"]);
-          for (var i = 0; i < mentions.length; i++) {
+          score = parseFloat(ds["score"]);
+        }
+        for (var i = 0; i < mentions.length; i++) {
             // { artist: mention,
             //   count:  1, 
             //   score: score}
@@ -79,7 +81,6 @@ function parse(data, callback) {
               "count": 1,
               "score": score});
             console.log("Pushed to buffer");
-          }
         }
       }
       callback();
