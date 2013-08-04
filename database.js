@@ -78,7 +78,7 @@ var realUpdate = function(arg) {
 exports.queryall = function(callback) {
   col.artist.find({}).toArray(function(err, docs){
     docs.forEach(function(elem, index, array){
-      docs[index].rating = elem.score / elem.count;
+      docs[index].rating = (elem.score / elem.count) / 2 + 0.5;
     });
     callback(docs);
   });
@@ -95,12 +95,18 @@ exports.draw = function(artist, callback) {
 }
 
 var realDraw = function(artist, callback) {
-  col.tweet.find().toArray(function(err, docs){
+  col.tweet.find({artist: artist}).toArray(function(err, docs){
     var n = docs.length;
-    var rand = Math.floor(Math.random()*n);
-    console.log("Lottery Luck guy:");
-    console.log(docs[rand]);
-    callback(docs[rand]);
+    if (n > 0){
+      var rand = Math.floor(Math.random()*n);
+      console.log("Lottery Luck guy:");
+      console.log(docs[rand]);
+      var ch = docs[rand];
+      var obj = {text: ch.text, name: ch.user.name, screen_name: ch.user.screen_name};
+      callback(obj);
+    } else {
+      callback({text: "", name:"", screen_name:""});
+    }
   });
 }
 

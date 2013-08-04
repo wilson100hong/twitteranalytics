@@ -32,6 +32,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/lottery_api', routes.lottery_api);
 app.get('/lottery', routes.lottery);
 app.get('/queryall', routes.queryall);
 

@@ -17,9 +17,13 @@ exports.queryall = function(req, res) {
   });
 };
 
-exports.lottery = function(req, res) {
-  var artist = req.query.artist;
+exports.lottery_api = function(req, res) {
+  var artist = req.query.artist || "noexist";
   db.draw(artist, function(lucky){
     res.send(JSON.stringify(lucky));
   });
+}
+
+exports.lottery = function(req, res) {
+  res.render('lottery');
 }
