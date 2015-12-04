@@ -1,4 +1,4 @@
-MeetBoy
+twitter analytics
 =======
 
-Meeting report bot
+Pipe twitter feeds to sentiment analysis
